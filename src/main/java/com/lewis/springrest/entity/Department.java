@@ -16,6 +16,14 @@ public class Department {
 	
 	public Department()
 	{}
+	
+	
+
+	public Department(String name) {
+		this.name = name;
+	}
+
+
 
 	public int getId() {
 		return id;
