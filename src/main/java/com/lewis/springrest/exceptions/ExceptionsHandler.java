@@ -11,10 +11,10 @@ public class ExceptionsHandler {
 	
 	
 	@ExceptionHandler
-	public ResponseEntity<StudentErrorResponse> handleException(StudentNotFoundException exc)
+	public ResponseEntity<ErrorResponse> handleException(CustomNotFoundException exc)
 	{
 		
-		StudentErrorResponse error = new StudentErrorResponse();
+		ErrorResponse error = new ErrorResponse();
 		
 		
 		error.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -28,10 +28,10 @@ public class ExceptionsHandler {
 	
 	
 	@ExceptionHandler
-	public ResponseEntity<StudentErrorResponse> handleException(Exception exc)
+	public ResponseEntity<ErrorResponse> handleException(Exception exc)
 	{
 		
-		StudentErrorResponse error = new StudentErrorResponse();
+		ErrorResponse error = new ErrorResponse();
 		
 		
 		error.setStatus(HttpStatus.NOT_FOUND.value());

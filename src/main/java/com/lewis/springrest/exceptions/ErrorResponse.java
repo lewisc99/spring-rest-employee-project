@@ -1,6 +1,6 @@
 package com.lewis.springrest.exceptions;
 
-public class StudentErrorResponse {
+public class ErrorResponse {
 
 	
 	private int status;
@@ -8,9 +8,9 @@ public class StudentErrorResponse {
 	private Long timeStamp;
 	
 	
-	public StudentErrorResponse() {}
+	public ErrorResponse() {}
 	
-	public StudentErrorResponse(int status, String message, Long timeStamp) {
+	public ErrorResponse(int status, String message, Long timeStamp) {
 		this.status = status;
 		this.message = message;
 		this.timeStamp = timeStamp;

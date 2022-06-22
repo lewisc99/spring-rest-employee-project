@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lewis.springrest.entity.Department;
+import com.lewis.springrest.exceptions.CustomNotFoundException;
 import com.lewis.springrest.services.DepartmentService;
 
 @RestController
@@ -30,10 +32,18 @@ public class DepartmentController {
 	}
 	
 	
-	@GetMapping("/hello")
-	public String demo()
+	@GetMapping("{id}")
+	public ResponseEntity<Department> getDepartment(@PathVariable int id)
 	{
-		return "Ola mundo";
+		Department department = service.getDepartmentById(id);
+		
+		if (department == null)
+		{
+			 throw new CustomNotFoundException("id not found");
+		}
+		
+		
+		
+		return ResponseEntity.ok().body(department);
 	}
-
 }

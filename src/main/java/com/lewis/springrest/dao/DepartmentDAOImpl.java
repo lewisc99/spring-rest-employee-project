@@ -1,6 +1,7 @@
 package com.lewis.springrest.dao;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,6 +19,9 @@ public class DepartmentDAOImpl  implements DepartmentDAO{
 	@Autowired
 	private SessionFactory session;
 	
+	
+	private Logger logger = Logger.getLogger(getClass().getName());
+	
 	@Override
 	public List<Department> getDepartments() {
 	
@@ -34,11 +38,20 @@ public class DepartmentDAOImpl  implements DepartmentDAO{
 	@Override
 	public Department getDepartmentById(int id) {
 		
+		try {
 		Session currentSession = session.getCurrentSession();
 		
 		Department departmentId = currentSession.get(Department.class, id);
-		
 		return departmentId;
+		
+		}
+		
+		catch(Exception e)
+		{
+			logger.info("error = *************************************************** ==============" + e.getStackTrace() );
+			throw  new RuntimeException();
+		}
+		
 		
 		
 		
