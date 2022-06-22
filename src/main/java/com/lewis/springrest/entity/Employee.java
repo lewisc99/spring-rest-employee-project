@@ -2,22 +2,43 @@ package com.lewis.springrest.entity;
 
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 
+
+@Entity
+@Table(name="employee")
 public class Employee {
 
 	
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id")
 	private int id;
 	
+	@Column(name="name")
 	private String name;
+
 	
+	@Column(name="email")
 	private String email;
 	
+	@JoinColumn(name="department_id")
+	@ManyToOne
+	private Department department;
+	
+	
+	@OneToMany(mappedBy="employee")
 	private List<Sales> sales;
 	
 	public Employee()
@@ -65,6 +86,23 @@ public class Employee {
 		this.email = email;
 	}
 
+
+
+
+	public Department getDepartment() {
+		return department;
+	}
+
+
+
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+
+
+	
 	
 
 	

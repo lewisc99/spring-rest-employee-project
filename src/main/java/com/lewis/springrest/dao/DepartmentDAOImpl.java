@@ -24,7 +24,7 @@ public class DepartmentDAOImpl  implements DepartmentDAO{
 		
 		Session currentSession = session.getCurrentSession();
 		
-		Query<Department> theQuery = currentSession.createQuery("from Department order by name",Department.class);
+		Query<Department> theQuery = currentSession.createQuery("from Department order by id",Department.class);
 		
 		return theQuery.getResultList();
 		
