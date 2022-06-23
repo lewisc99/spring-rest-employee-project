@@ -18,25 +18,64 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 	
 	@Override
 	public List<Employee> getEmployees() {
+		
+		
+		try {
+			
+		
 	
 		Session currentSession = session.getCurrentSession();
 		
 		List<Employee> employees = currentSession.createQuery("from Employee order by id").getResultList();
 		
 		return employees;
-		
+		}
+		catch (Exception e)
+		{
+			e.getStackTrace();
+			throw new RuntimeException(e.getMessage());
+		}
 		
 	}
+	
 
 	@Override
 	public Employee getEmployeeById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	 
+		
+		try {
+			Session currentSession = session.getCurrentSession();
+			
+			Employee employeeById = currentSession.get(Employee.class, id);
+			
+			
+			return employeeById;
+			
+		}
+		catch( Exception e)
+		{
+			e.getStackTrace();
+			throw new RuntimeException(e.getMessage());
+		}
 	}
 
 	@Override
 	public void addEmployee(Employee employee) {
-		// TODO Auto-generated method stub
+	
+		try
+		{
+			
+			Session currentSession = session.getCurrentSession();
+			
+			employee.setId(0);
+			currentSession.save(employee);
+			
+			
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e.getMessage());
+		}
 		
 	}
 

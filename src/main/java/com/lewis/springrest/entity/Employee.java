@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -26,16 +28,21 @@ public class Employee {
 	@Column(name="id")
 	private int id;
 	
+	
+	@NotNull(message="Name cannot be null")
+	@Min(value=5, message="Name should be at least 5 characters")
 	@Column(name="name")
 	private String name;
 
-	
+	@NotNull(message="Email cannot be null")
 	@Column(name="email")
 	private String email;
+	
 	
 	@JoinColumn(name="department_id")
 	@ManyToOne
 	private Department department;
+	
 	
 	
 	@OneToMany(mappedBy="employee")
