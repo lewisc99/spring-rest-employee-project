@@ -1,6 +1,7 @@
 package com.lewis.springrest.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -80,14 +81,56 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 	}
 
 	@Override
-	public Employee updateEmployee(Employee employee) {
-		// TODO Auto-generated method stub
-		return null;
+	public Employee updateEmployee(int id, Employee newEmployee) {
+		 
+		try
+		{
+			Session currentSession = session.getCurrentSession();
+			
+			Employee currentEmployee = getEmployeeById(id);
+			
+		Employee updatedEmployee  =	authorizedchangeProperty(currentEmployee,newEmployee);
+			
+		currentSession.update(updatedEmployee);
+		
+		return updatedEmployee;
+		
+		}
+		
+		catch (Exception e)
+		{
+			throw new RuntimeException();
+		}
+		
+		
 	}
 
 	@Override
 	public void deleteEmployee(int id) {
-		// TODO Auto-generated method stub
+	 
+		try {
+		Session currentSession = session.getCurrentSession();
+		
+		Employee employeeId = getEmployeeById(id);
+		
+		currentSession.remove(employeeId);
+		
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException();
+		}
+		
+	}
+	
+	
+	
+	private Employee authorizedchangeProperty(Employee currentEmployee, Employee newEmployee)
+	{
+		
+		currentEmployee.setEmail(newEmployee.getEmail());
+		
+		return currentEmployee;
 		
 	}
 

@@ -14,10 +14,10 @@ public interface EmployeeService {
 	
 	public Employee getEmployeeById(int id);
 	
-	public void addEmployee(@RequestBody Employee employee);
+	public void addEmployee( Employee employee);
 	
-	public Employee updateEmployee(@RequestBody Employee employee);
+	public Employee updateEmployee( int ind, Employee employee);
 	
-	public void deleteEmployee(@PathVariable int id);
+	public void deleteEmployee( int id);
 	
 }

@@ -16,7 +16,7 @@ public interface EmployeeDAO {
 	
 	public void addEmployee(@RequestBody Employee employee);
 	
-	public Employee updateEmployee(@RequestBody Employee employee);
+	public Employee updateEmployee(int id, @RequestBody Employee employee);
 	
 	public void deleteEmployee(@PathVariable int id);
 }
