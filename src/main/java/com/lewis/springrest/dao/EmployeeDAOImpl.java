@@ -18,7 +18,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 	private SessionFactory session;
 	
 	@Override
-	public List<Employee> getEmployees() {
+	public List<Employee> getEmployees(int pagNumber, int pagSize) {
 		
 		
 		try {
@@ -29,7 +29,27 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 		
 		List<Employee> employees = currentSession.createQuery("from Employee order by id").getResultList();
 		
-		return employees;
+		if (pagNumber < 1 && pagSize > 1)
+		{
+			pagNumber = 1;
+		}
+		
+		if ((pagNumber == 0) && (pagSize  == 0))
+		{
+			
+			return employees;
+		}
+		else
+		{
+			List<Employee> takeEmployees = employees.stream().skip((pagNumber - 1) * pagSize).limit(pagSize).toList();
+			System.out.print(takeEmployees);
+			
+			return takeEmployees;
+			
+		}
+		
+		
+		
 		}
 		catch (Exception e)
 		{

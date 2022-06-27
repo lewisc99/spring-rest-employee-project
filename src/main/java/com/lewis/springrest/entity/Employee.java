@@ -1,5 +1,6 @@
 package com.lewis.springrest.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -48,6 +49,8 @@ public class Employee {
 	@OneToMany(mappedBy="employee")
 	private List<Sales> sales;
 	
+
+	
 	public Employee()
 	{}
 	
@@ -95,19 +98,7 @@ public class Employee {
 
 
 
-
-	public Department getDepartment() {
-		return department;
-	}
-
-
-
-
-	public void setDepartment(Department department) {
-		this.department = department;
-	}
-
-
+	
 
 	
 	

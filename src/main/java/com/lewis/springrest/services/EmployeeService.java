@@ -10,7 +10,7 @@ import com.lewis.springrest.entity.Employee;
 public interface EmployeeService {
 
 	
-	public List<Employee> getEmployees();
+	public List<Employee> getEmployees(int pagNumber, int pagSize);
 	
 	public Employee getEmployeeById(int id);
 	
