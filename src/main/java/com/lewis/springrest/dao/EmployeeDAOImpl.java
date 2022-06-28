@@ -8,6 +8,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.lewis.springrest.dto.EmployeeDTO;
+import com.lewis.springrest.dto.EmployeesDTO;
 import com.lewis.springrest.entity.Employee;
 
 @Repository
@@ -17,8 +19,9 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 	@Autowired
 	private SessionFactory session;
 	
+	
 	@Override
-	public List<Employee> getEmployees(int pagNumber, int pagSize) {
+	public EmployeesDTO getEmployees(int pagNumber, int pagSize, String urlEmployee) {
 		
 		
 		try {
@@ -28,23 +31,48 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 		Session currentSession = session.getCurrentSession();
 		
 		List<Employee> employees = currentSession.createQuery("from Employee order by id").getResultList();
+		EmployeesDTO employeesDTO = new EmployeesDTO();
+		int employeesSize = employees.size();
+		
+		
 		
 		if (pagNumber < 1 && pagSize > 1)
 		{
 			pagNumber = 1;
 		}
 		
-		if ((pagNumber == 0) && (pagSize  == 0))
+		if ((pagNumber <= 0) && (pagSize  <= 0))
 		{
 			
-			return employees;
+			
+			 employeesDTO.addEmployees(employees,urlEmployee);
+	
+			return employeesDTO;
 		}
 		else
 		{
-			List<Employee> takeEmployees = employees.stream().skip((pagNumber - 1) * pagSize).limit(pagSize).toList();
-			System.out.print(takeEmployees);
 			
-			return takeEmployees;
+			
+			List<Employee> takeEmployees = employees.stream().skip((pagNumber - 1) * pagSize).limit(pagSize).toList();
+			
+			
+			int employeeTotalPages = (int) Math.ceil((double) employeesSize / pagSize );
+			
+			
+			
+			
+			employeesDTO.AddPage(pagSize, employeesSize, employeeTotalPages, pagNumber);
+			
+			
+			System.out.print(takeEmployees);
+	
+			
+			employeesDTO.addEmployees(takeEmployees,urlEmployee);
+			
+		
+			
+			
+			return employeesDTO;
 			
 		}
 		
@@ -59,6 +87,10 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 		
 	}
 	
+	
+	
+
+
 
 	@Override
 	public Employee getEmployeeById(int id) {
@@ -153,5 +185,6 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 		return currentEmployee;
 		
 	}
-
+	
+	
 }

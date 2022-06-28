@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lewis.springrest.dao.EmployeeDAO;
+import com.lewis.springrest.dto.EmployeesDTO;
 import com.lewis.springrest.entity.Employee;
 
 
@@ -20,9 +21,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	@Transactional
-	public List<Employee> getEmployees(int pagNumber, int pagSize) {
+	public EmployeesDTO getEmployees(int pagNumber, int pagSize, String urlEmployee) {
 	 
-	return	employeeDAO.getEmployees(pagNumber,pagSize);
+	return	employeeDAO.getEmployees(pagNumber,pagSize,urlEmployee);
+	
 	}
 
 	@Override

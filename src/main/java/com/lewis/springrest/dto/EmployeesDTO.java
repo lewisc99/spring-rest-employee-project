@@ -60,14 +60,20 @@ public class EmployeesDTO {
 			employeeDTO.AddLink(url + employee.getId(), "self");
 			
 			_embedded.add(employeeDTO);
+			
+			
 		
 		}
 		
+	
+		
 	}
 	
-	public  void AddPage(String size, String totalElements,String totalPages, String number) 
+	public  void AddPage(int size, int totalElements,int totalPages, int number) 
 	{
+		 this.page = new Page(size,totalElements,totalPages,number);
 		
+		 
 	}
 
 	

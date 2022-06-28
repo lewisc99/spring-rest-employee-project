@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lewis.springrest.dao.EmployeeDAO;
+import com.lewis.springrest.dao.EmployeeDAOImpl;
 import com.lewis.springrest.dto.EmployeeDTO;
 import com.lewis.springrest.dto.EmployeesDTO;
 import com.lewis.springrest.entity.Employee;
@@ -43,60 +45,56 @@ public class EmployeeController {
 	
 	
 	@GetMapping()
-	public ResponseEntity<EmployeesDTO> ReturnAll(@RequestParam("pagNumber") int pagNumber, @RequestParam("pagSize") int pagSize,
+	public ResponseEntity<EmployeesDTO> ReturnAll(@RequestParam(value="pagNumber", required = false) Integer pagNumber,
+			@RequestParam(value="pagSize", required = false) Integer pagSize,
 			HttpServletRequest request)
 	{
 		
-		List<Employee> employees = employeeService.getEmployees(pagNumber, pagSize);
 		
-		
-		
+		if (pagNumber == null && pagSize == null)
+		{
+			pagNumber = 0;
+			pagSize = 0;
+		}
 		
 		String fullUrl = request.getRequestURI().toString();
 		String urlForEmployees = request.getRequestURI().toString();
 		
 		
+		EmployeesDTO employeesDTO = employeeService.getEmployees(pagNumber, pagSize,fullUrl);
 		
-		if (!(pagNumber == 0 && pagSize == 0) )
+		
+		
+		
+	
+		
+		
+		
+		if (!(pagNumber <= 0 && pagSize <= 0) )
 		{
 			 urlForEmployees += "?" + "pagNumber=" + pagNumber + "&pagSize=" + pagSize;
 		}
 		
-		
-		/*
-		 * 
-			  "page": {
-			        "size": 14,          - total elements for page
-			        "totalElements": 30, =  total elements 
-			        "totalPages": 3, =       total Pages
-			        "number": 1        =     number of current page
-			    }
-		 */
+		employeesDTO.addLink(urlForEmployees, "getAllEmployees");
 		
 		
-		if (employees.isEmpty() )
+	
+		
+		if (employeesDTO.get_embedded().isEmpty() )
 		{
 			return ResponseEntity.notFound().build();
 		}
 		
 		
 		
-		EmployeesDTO employeesDTO = new EmployeesDTO();
-		
-		
-		
-		
-		employeesDTO.addEmployees(employees,fullUrl);
-		
-		
-		
-		
-		employeesDTO.addLink(urlForEmployees, "self");
+	
 		
 		
 		return ResponseEntity.ok().body(employeesDTO);
 		
 	}
+	
+	
 	
 	@GetMapping("{id}")
 	public ResponseEntity<EmployeeDTO> returnById(@PathVariable int id,  HttpServletRequest request) 
@@ -147,10 +145,11 @@ public class EmployeeController {
 	}
 	
 	@PutMapping("{id}")
-	public ResponseEntity<Employee> Update(@PathVariable int id, @RequestBody Employee employee)
+	public ResponseEntity<EmployeeDTO> Update(@PathVariable int id, @RequestBody Employee employee,  HttpServletRequest request)
 	{
 	
 		Employee employeeId = employeeService.getEmployeeById(id);
+		String fullURL = request.getRequestURL().toString();
 		
 		if (employeeId == null)
 		{
@@ -163,9 +162,16 @@ public class EmployeeController {
 			ResponseEntity.badRequest().build();
 		}
 		
+		
 		Employee employeeUpdated = employeeService.updateEmployee(id, employee);
 		
-		return ResponseEntity.status(200).body(employeeUpdated);
+		EmployeeDTO employeeDTO = new EmployeeDTO(employeeUpdated);
+
+		employeeDTO.AddLink(fullURL , "self");
+		
+
+		
+		return ResponseEntity.status(200).body(employeeDTO);
 	}
 
 	@DeleteMapping("{id}")

@@ -12,6 +12,21 @@ public class Page {
 	
 	public Page() {}
 
+	
+	
+	
+	
+	public Page(int size, int totalElements, int totalPages, int pagNumber) {
+		this.size = size;
+		this.totalElements = totalElements;
+		this.totalPages = totalPages;
+		this.pagNumber = pagNumber;
+	}
+
+
+
+
+
 	public int getSize() {
 		return size;
 	}
