@@ -42,6 +42,8 @@ public class Sales {
 	
 	public Sales() {}
 
+	
+
 	public int getId() {
 		return id;
 	}
