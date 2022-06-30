@@ -58,13 +58,20 @@ public class SalesDTO {
 		
 	}
 	
+
+	public  void AddPage(int size, int totalElements,int totalPages, int number) 
+	{
+		 this.page = new Page(size,totalElements,totalPages,number);
+		
+		 
+	}
 	
 	public void addSales(List<Sales> sales, String urlLInk)
 	{
 		
 		for(Sales sale: sales)
 		{
-			Link link = new Link(urlLInk,"self");
+			Link link = new Link(urlLInk + sale.getId(),"self");
 			
 			 SaleDTO saleDTO = new SaleDTO();
 			 
