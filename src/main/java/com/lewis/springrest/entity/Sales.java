@@ -27,7 +27,7 @@ public class Sales {
 	@Column(name="product_name")
 	private String productName;
 	
-	@Column(name="customer")
+	@Column(name="customer_name")
 	private String customer;
 	
 	@Column(name="date_created")
@@ -35,9 +35,9 @@ public class Sales {
 	
 	
 	
-	@JoinColumn(name="employee_id", referencedColumnName = "id")
+	@JoinColumn(name="employee_id")
 	@ManyToOne( cascade= CascadeType.ALL)
-	@PrimaryKeyJoinColumn
+
 	private Employee employee;
 	
 	public Sales() {}

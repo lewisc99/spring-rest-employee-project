@@ -52,7 +52,7 @@ public class SalesDTO {
 	public void addLink(String href, String rel)
 	{
 		
-		Link link = new Link(href,"self");
+		Link link = new Link(href,rel);
 		
 		this.links.add(link);
 		
@@ -71,9 +71,11 @@ public class SalesDTO {
 		
 		for(Sales sale: sales)
 		{
-			Link link = new Link(urlLInk + sale.getId(),"self");
+			Link link = new Link(urlLInk +"/"+ sale.getId(),"self");
 			
-			 SaleDTO saleDTO = new SaleDTO();
+			 SaleDTO saleDTO = new SaleDTO(sale);
+			 
+			
 			 
 			 saleDTO.addLink(link);
 			 

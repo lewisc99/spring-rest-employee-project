@@ -28,8 +28,8 @@ public class SaleServiceImpl implements SaleService{
 	@Transactional
 	@Override
 	public SaleDTO returnById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	 
+		return salesDAO.returnById(id);
 	}
 
 }
