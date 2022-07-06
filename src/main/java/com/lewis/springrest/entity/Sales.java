@@ -12,6 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.factory.annotation.Required;
 
 
 @Entity
@@ -24,17 +28,23 @@ public class Sales {
 	@Column(name="id")
 	private int id;
 	
+	
+	@NotNull
 	@Column(name="product_name")
+	@Min(value=4,message="product Name cannot be null")
 	private String productName;
 	
+	@NotNull
+	@Min(value=4,message="customer cannot be null")
 	@Column(name="customer_name")
 	private String customer;
 	
+	@NotNull
 	@Column(name="date_created")
 	private Date dateCreated;
 	
 	
-	
+	@NotNull
 	@JoinColumn(name="employee_id")
 	@ManyToOne( cascade= CascadeType.ALL)
 

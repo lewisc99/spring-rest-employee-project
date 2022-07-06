@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lewis.springrest.dao.SalesDAO;
 import com.lewis.springrest.dto.SaleDTO;
 import com.lewis.springrest.dto.SalesDTO;
+import com.lewis.springrest.entity.Sales;
 
 @Service
 public class SaleServiceImpl implements SaleService{
@@ -18,10 +19,10 @@ public class SaleServiceImpl implements SaleService{
 	
 	@Transactional
 	@Override
-	public SalesDTO returnAll(int pagNumber, int pagSize, String Url) {
+	public SalesDTO returnAll(int pagNumber, int pagSize, String Url, String sort) {
 		 
 		
-		return salesDAO.returnAll(pagNumber, pagSize, Url);
+		return salesDAO.returnAll(pagNumber, pagSize, Url, sort);
 	}
 
 	
@@ -30,6 +31,14 @@ public class SaleServiceImpl implements SaleService{
 	public SaleDTO returnById(int id) {
 	 
 		return salesDAO.returnById(id);
+	}
+
+	@Transactional
+	@Override
+	public void Create(Sales sales) {
+		
+		
+		salesDAO.Create(sales);
 	}
 
 }

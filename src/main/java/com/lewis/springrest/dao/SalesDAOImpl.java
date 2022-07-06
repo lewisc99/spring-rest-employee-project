@@ -1,5 +1,6 @@
 package com.lewis.springrest.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -19,85 +20,75 @@ public class SalesDAOImpl implements SalesDAO {
 	private SessionFactory session;
 
 	@Override
-	public SalesDTO returnAll(int pagNumber, int pagSize, String url) {
+	public SalesDTO returnAll(int pagNumber, int pagSize, String url, String sort) {
 
 		try {
-		
-		Session currentSession = session.getCurrentSession();
 
-		List<Sales> sales = currentSession.createQuery("from Sales order by id").getResultList();
-													  
-		int salesSize = sales.size();
-		SalesDTO salesDTO = new SalesDTO();
+			Session currentSession = session.getCurrentSession();
 
-		if ((pagNumber <= 0) && (pagSize <= 0)) {
+			List<Sales> sales = currentSession.createQuery("from Sales order by " + sort).getResultList();
 
-			salesDTO.addSales(sales, url);
-			salesDTO.AddPage(0, salesSize, 0, 0);
-			
+			int salesSize = sales.size();
+			SalesDTO salesDTO = new SalesDTO();
+
+			if ((pagNumber <= 0) && (pagSize <= 0)) {
+
+				salesDTO.addSales(sales, url);
+				salesDTO.AddPage(0, salesSize, 0, 0);
+
+				return salesDTO;
+			}
+
+			if (pagNumber < 1 && pagSize >= 1) {
+				pagNumber = 1;
+			}
+
+			List<Sales> salesResized = sales.stream().skip((pagNumber - 1) * pagSize).limit(pagSize).toList();
+
+			int salesTotalByPage = (int) Math.ceil((double) salesSize / pagSize);
+
+			salesDTO.AddPage(pagSize, salesSize, salesTotalByPage, pagNumber);
+
+			salesDTO.addSales(salesResized, url);
+
 			return salesDTO;
-		}
 
-		if (pagNumber < 1 && pagSize >= 1) {
-			pagNumber = 1;
-		}
-		
-		List<Sales> salesResized = sales.stream().skip((pagNumber - 1) * pagSize).limit(pagSize).toList();
-		
-		int salesTotalByPage = (int) Math.ceil((double)  salesSize / pagSize);
-		
-		salesDTO.AddPage(pagSize, salesSize, salesTotalByPage, pagNumber);
-		
-		salesDTO.addSales(salesResized, url);
-		
-		return salesDTO;
-		
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		}
 	}
 
 	@Override
 	public SaleDTO returnById(int id) {
-	
+
 		try {
-		
-		Session currentSession = session.getCurrentSession();
-		
-		
-		Sales sales = currentSession.get(Sales.class, id);
-		
-		
-		
-		SaleDTO saleDTO = new SaleDTO(sales);
-		
-		return saleDTO;
-		}
-		catch(CustomNotFoundException e)
-		{
+
+			Session currentSession = session.getCurrentSession();
+
+			Sales sales = currentSession.get(Sales.class, id);
+
+			SaleDTO saleDTO = new SaleDTO(sales);
+
+			return saleDTO;
+		} catch (CustomNotFoundException e) {
 
 			throw new CustomNotFoundException("id not found " + id);
 		}
-		
-		catch(Exception e) {
-			
+
+		catch (Exception e) {
+
 			throw new RuntimeException(e.getMessage());
 		}
 	}
 
 	@Override
 	public void Create(Sales sales) {
-		
-		
+
 		Session currentSession = session.getCurrentSession();
-		
+
 		sales.setId(0);
 		currentSession.save(sales);
-			
-			
-		
+
 	}
 
 }

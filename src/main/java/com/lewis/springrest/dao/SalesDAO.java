@@ -7,7 +7,7 @@ import com.lewis.springrest.entity.Sales;
 public interface SalesDAO {
 
 	
-	public SalesDTO returnAll(int pagNumber, int pagSize, String Url);
+	public SalesDTO returnAll(int pagNumber, int pagSize, String Url, String sort);
 	
 	public SaleDTO returnById(int id);
 	
