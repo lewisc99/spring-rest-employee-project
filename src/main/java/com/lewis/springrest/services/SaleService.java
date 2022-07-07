@@ -11,4 +11,6 @@ public interface SaleService {
 	public SaleDTO returnById(int id);
 
 	public void Create(Sales sales);
+	
+	public Sales Update(Sales sales, int id);
 }

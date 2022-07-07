@@ -7,9 +7,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import com.lewis.springrest.dto.SaleDTO;
 import com.lewis.springrest.dto.SalesDTO;
+import com.lewis.springrest.entity.Employee;
 import com.lewis.springrest.entity.Sales;
 import com.lewis.springrest.exceptions.CustomNotFoundException;
 
@@ -34,7 +37,7 @@ public class SalesDAOImpl implements SalesDAO {
 			if ((pagNumber <= 0) && (pagSize <= 0)) {
 
 				salesDTO.addSales(sales, url);
-				salesDTO.AddPage(0, salesSize, 0, 0);
+				salesDTO.AddPage(salesSize, salesSize, 0, 0);
 
 				return salesDTO;
 			}
@@ -84,11 +87,42 @@ public class SalesDAOImpl implements SalesDAO {
 	@Override
 	public void Create(Sales sales) {
 
+		
+		try {
+			Session currentSession = session.getCurrentSession();
+
+			sales.setId(0);
+			currentSession.save(sales);
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e.getMessage());
+		}
+
+	}
+	
+
+	public Sales Update(Sales sales, int id)
+	{
+		 
+		Sales salesChanged = RestrictedUpdate(sales, id);
+		
+		
+		return salesChanged;
+		
+	}
+	
+	private Sales RestrictedUpdate(Sales sales, int id)
+	{
 		Session currentSession = session.getCurrentSession();
 
-		sales.setId(0);
-		currentSession.save(sales);
-
+		Sales salesDefault = currentSession.get(Sales.class, id);
+		
+		salesDefault.setProductName(sales.getProductName());
+		salesDefault.setCustomer(sales.getCustomer());
+		
+		return salesDefault;
+		
 	}
 
 }

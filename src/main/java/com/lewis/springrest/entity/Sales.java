@@ -44,11 +44,13 @@ public class Sales {
 	private Date dateCreated;
 	
 	
-	@NotNull
 	@JoinColumn(name="employee_id")
 	@ManyToOne( cascade= CascadeType.ALL)
 
 	private Employee employee;
+	
+
+
 	
 	public Sales() {}
 
@@ -92,6 +94,15 @@ public class Sales {
 
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
+	}
+
+
+
+
+	@Override
+	public String toString() {
+		return "Sales [id=" + id + ", productName=" + productName + ", customer=" + customer + ", dateCreated="
+				+ dateCreated + ", employee=" + employee + ", employeeId="  + "]";
 	}
 
 	

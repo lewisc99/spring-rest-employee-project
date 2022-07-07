@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lewis.springrest.dto.SaleDTO;
 import com.lewis.springrest.dto.SalesDTO;
+import com.lewis.springrest.entity.Employee;
 import com.lewis.springrest.entity.Link;
 import com.lewis.springrest.entity.Sales;
 import com.lewis.springrest.exceptions.CustomNotFoundException;
+import com.lewis.springrest.services.EmployeeService;
 import com.lewis.springrest.services.SaleService;
 
 @RequestMapping("api/sales")
@@ -26,12 +29,15 @@ public class SalesController {
 
 	@Autowired
 	private SaleService service;
+	
+	@Autowired
+	private EmployeeService employeeService;
 
 	@GetMapping()
 	public ResponseEntity<SalesDTO> returnAll(@RequestParam(name = "pagNumber", required = false) Integer pagNumber,
 			@RequestParam(name = "pagSize", required = false) Integer pagSize,@RequestParam(name="sort",required=false) String sort, HttpServletRequest requestUrl) {
 
-		if (pagNumber == null && pagSize == null & sort.isEmpty()) {
+		if (pagNumber == null && pagSize == null & sort == null) {
 			pagNumber = 0;
 			pagSize = 0;
 			sort = "id";
@@ -105,8 +111,8 @@ public class SalesController {
 		return ResponseEntity.ok().body(new Sales());
 	}
 	
-	@PostMapping
-	public ResponseEntity<Void> returnById(@RequestBody @Valid Sales sales)
+	@PostMapping()
+	public ResponseEntity<Void> Create(@RequestBody @Valid Sales sales)
 	
 	{
 		if (sales == null)
@@ -114,11 +120,33 @@ public class SalesController {
 			throw new RuntimeException("Employee is empty");
 		}
 		
+		Employee employee = employeeService.getEmployeeById(sales.getEmployee().getId());
+		
+		sales.setEmployee(employee);
 		
 		service.Create(sales);
 		
 		
 		return ResponseEntity.status(201).build();
+		
+	}
+	
+	
+	
+	@PutMapping("{id}")
+	public ResponseEntity<Sales> Update(@PathVariable int id, Sales sales)
+	{
+		
+		SaleDTO saleById = service.returnById(id);
+		
+		if (saleById == null)
+		{
+			throw new CustomNotFoundException("id not found");
+		}
+		
+		Sales salesUpdated = service.Update(sales, id);
+		
+		return ResponseEntity.status(200).body(salesUpdated);
 		
 	}
 

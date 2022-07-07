@@ -40,5 +40,15 @@ public class SaleServiceImpl implements SaleService{
 		
 		salesDAO.Create(sales);
 	}
+	
+	
+	@Override
+	@Transactional
+	public Sales Update(Sales sales, int id)
+	{
+		Sales salesUpdated = salesDAO.Update(sales, id);
+		
+		return salesUpdated;
+	}
 
 }
