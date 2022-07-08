@@ -104,8 +104,11 @@ public class SalesDAOImpl implements SalesDAO {
 
 	public Sales Update(Sales sales, int id)
 	{
-		 
+		
+		
 		Sales salesChanged = RestrictedUpdate(sales, id);
+		
+		
 		
 		
 		return salesChanged;
@@ -119,10 +122,23 @@ public class SalesDAOImpl implements SalesDAO {
 		Sales salesDefault = currentSession.get(Sales.class, id);
 		
 		salesDefault.setProductName(sales.getProductName());
-		salesDefault.setCustomer(sales.getCustomer());
+		//salesDefault.setCustomer(sales.getCustomer());
+		
+		currentSession.saveOrUpdate(salesDefault);
 		
 		return salesDefault;
 		
+	}
+
+	@Override
+	public void Delete(int id) {
+	
+		
+		Session currentSession = session.getCurrentSession();
+		
+		Sales salesDefault = currentSession.get(Sales.class, id);
+
+		currentSession.delete(salesDefault);
 	}
 
 }

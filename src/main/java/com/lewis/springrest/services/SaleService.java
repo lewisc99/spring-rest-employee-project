@@ -13,4 +13,6 @@ public interface SaleService {
 	public void Create(Sales sales);
 	
 	public Sales Update(Sales sales, int id);
+
+	public void Delete(int id);
 }

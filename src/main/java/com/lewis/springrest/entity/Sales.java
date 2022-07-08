@@ -45,7 +45,7 @@ public class Sales {
 	
 	
 	@JoinColumn(name="employee_id")
-	@ManyToOne( cascade= CascadeType.ALL)
+	@ManyToOne( cascade= CascadeType.MERGE)
 
 	private Employee employee;
 	

@@ -51,4 +51,13 @@ public class SaleServiceImpl implements SaleService{
 		return salesUpdated;
 	}
 
+
+	@Override
+	@Transactional
+	public void Delete(int id) {
+		 
+		salesDAO.Delete(id);
+		
+	}
+
 }
